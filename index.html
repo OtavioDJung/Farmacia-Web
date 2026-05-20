@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Controle de Estoque - Farmácia</title>
+
+    <!-- Fonte -->
+
+    <link rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Ícones -->
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- CSS -->
+
+    <link rel="stylesheet"
+        href="style.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- =========================
+             TOPO
+        ========================== -->
+
+        <header class="topo">
+
+            <div>
+
+                <h1>
+
+                    <i class="fa-solid fa-capsules"></i>
+
+                    Controle de Estoque
+
+                </h1>
+
+                <p>
+
+                    Sistema de gerenciamento farmacêutico
+
+                </p>
+
+            </div>
+
+            <!-- CARDS -->
+
+            <div class="status">
+
+                <div class="card-status">
+
+                    <span>Total</span>
+
+                    <strong id="totalCard">0</strong>
+
+                </div>
+
+                <div class="card-status vencido-card">
+
+                    <span>Vencidos</span>
+
+                    <strong id="vencidosCard">0</strong>
+
+                </div>
+
+                <div class="card-status proximo-card">
+
+                    <span>Próximos</span>
+
+                    <strong id="proximosCard">0</strong>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- =========================
+             FORMULÁRIO
+        ========================== -->
+
+        <section class="card">
+
+            <div class="titulo-card">
+
+                <i class="fa-solid fa-plus"></i>
+
+                <h2>Cadastrar Medicamento</h2>
+
+            </div>
+
+            <div class="formulario">
+
+                <!-- MEDICAMENTO -->
+
+                <div class="campo">
+
+                    <label>Medicamento</label>
+
+                    <input type="text"
+                        id="nome"
+                        placeholder="Ex: Dipirona">
+
+                </div>
+
+                <!-- LOTE -->
+
+                <div class="campo">
+
+                    <label>Lote</label>
+
+                    <input type="text"
+                        id="lote"
+                        placeholder="Ex: LOT123">
+
+                </div>
+
+                <!-- QUANTIDADE -->
+
+                <div class="campo">
+
+                    <label>Quantidade</label>
+
+                    <input type="number"
+                        id="quantidade"
+                        placeholder="0">
+
+                </div>
+
+                <!-- VALIDADE -->
+
+                <div class="campo">
+
+                    <label>Validade</label>
+
+                    <input type="date"
+                        id="validade">
+
+                </div>
+
+                <!-- PREÇO -->
+
+                <div class="campo">
+
+                    <label>Preço</label>
+
+                    <input type="number"
+                        id="preco"
+                        placeholder="0.00">
+
+                </div>
+
+                <!-- FORNECEDOR -->
+
+                <div class="campo">
+
+                    <label>Fornecedor</label>
+
+                    <input type="text"
+                        id="fornecedor"
+                        placeholder="Fornecedor">
+
+                </div>
+
+            </div>
+
+            <!-- BOTÕES -->
+
+            <div class="acoes-formulario">
+
+                <!-- CADASTRAR -->
+
+                <button class="btn-cadastrar"
+                    onclick="cadastrar()">
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+
+                    Cadastrar Medicamento
+
+                </button>
+
+                <!-- SALVAR GITHUB -->
+
+                <button class="btn-github"
+                    onclick="salvarNoGitHub()">
+
+                    <i class="fa-brands fa-github"></i>
+
+                    Salvar no GitHub
+
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- =========================
+             FILTROS
+        ========================== -->
+
+        <section class="filtros">
+
+            <!-- TODOS -->
+
+            <button onclick="mostrarTodos()">
+
+                <i class="fa-solid fa-list"></i>
+
+                Todos
+
+            </button>
+
+            <!-- VENCIDOS -->
+
+            <button onclick="mostrarVencidos()">
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                Vencidos
+
+            </button>
+
+            <!-- PRÓXIMOS -->
+
+            <button onclick="mostrarProximos()">
+
+                <i class="fa-solid fa-clock"></i>
+
+                Próximos 30 dias
+
+            </button>
+
+            <!-- IMPORTAR GITHUB -->
+
+            <button
+                onclick="importarJSON()"
+                class="btn-importar">
+
+                <i class="fa-brands fa-github"></i>
+
+                Importar GitHub
+
+            </button>
+
+        </section>
+
+        <!-- =========================
+             TABELA
+        ========================== -->
+
+        <section class="card tabela-card">
+
+            <div class="titulo-card">
+
+                <i class="fa-solid fa-boxes-stacked"></i>
+
+                <h2>
+
+                    Medicamentos Cadastrados
+
+                </h2>
+
+            </div>
+
+            <div class="tabela-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Medicamento</th>
+
+                            <th>Lote</th>
+
+                            <th>Quantidade</th>
+
+                            <th>Validade</th>
+
+                            <th>Preço</th>
+
+                            <th>Fornecedor</th>
+
+                            <th>Ação</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tabelaMedicamentos">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+        <!-- =========================
+             INFORMAÇÕES
+        ========================== -->
+
+        <div id="info"></div>
+
+    </div>
+
+    <!-- JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
