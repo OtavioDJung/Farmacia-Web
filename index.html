@@ -21,20 +21,20 @@
                 <i class="fa-solid fa-capsules"></i>
                 Controle de Estoque
             </h1>
-            <p>Sistema de gerenciamento farmacêutico</p>
+            <p>Organize seus medicamentos de forma simples e prática</p>
         </div>
 
         <div class="status">
             <div class="card-status">
-                <span>Total</span>
+                <span>Total no estoque</span>
                 <strong id="totalCard">0</strong>
             </div>
             <div class="card-status vencido-card">
-                <span>Vencidos</span>
+                <span>Já vencidos</span>
                 <strong id="vencidosCard">0</strong>
             </div>
             <div class="card-status proximo-card">
-                <span>Próximos</span>
+                <span>Vencem em breve</span>
                 <strong id="proximosCard">0</strong>
             </div>
         </div>
@@ -44,40 +44,40 @@
     <section class="card">
         <div class="titulo-card">
             <i class="fa-solid fa-plus"></i>
-            <h2>Cadastrar Medicamento</h2>
+            <h2>Adicionar novo medicamento</h2>
         </div>
 
         <div class="formulario">
             <div class="campo">
-                <label>Medicamento</label>
-                <input type="text" id="nome" placeholder="Ex: Dipirona">
+                <label>Nome do medicamento</label>
+                <input type="text" id="nome" placeholder="Ex: Dipirona 500mg">
             </div>
             <div class="campo">
-                <label>Lote</label>
+                <label>Número do lote</label>
                 <input type="text" id="lote" placeholder="Ex: LOT123">
             </div>
             <div class="campo">
-                <label>Quantidade</label>
-                <input type="number" id="quantidade" placeholder="0">
+                <label>Quantidade em estoque</label>
+                <input type="number" id="quantidade" placeholder="Quantas unidades?">
             </div>
             <div class="campo">
-                <label>Validade</label>
+                <label>Data de validade</label>
                 <input type="date" id="validade">
             </div>
             <div class="campo">
-                <label>Preço</label>
-                <input type="number" id="preco" placeholder="0.00" step="0.01">
+                <label>Preço unitário</label>
+                <input type="number" id="preco" placeholder="0,00" step="0.01">
             </div>
             <div class="campo">
                 <label>Fornecedor</label>
-                <input type="text" id="fornecedor" placeholder="Fornecedor">
+                <input type="text" id="fornecedor" placeholder="De quem você comprou?">
             </div>
         </div>
 
         <div class="acoes-formulario">
             <button class="btn-cadastrar" onclick="cadastrar()">
                 <i class="fa-solid fa-floppy-disk"></i>
-                Cadastrar Medicamento
+                Salvar medicamento
             </button>
         </div>
     </section>
@@ -86,15 +86,15 @@
     <section class="filtros">
         <button onclick="mostrarTodos()">
             <i class="fa-solid fa-list"></i>
-            Todos
+            Ver todos
         </button>
         <button onclick="mostrarVencidos()">
             <i class="fa-solid fa-triangle-exclamation"></i>
-            Vencidos
+            Só os vencidos
         </button>
         <button onclick="mostrarProximos()">
             <i class="fa-solid fa-clock"></i>
-            Próximos 30 dias
+            Vencem nos próximos 30 dias
         </button>
     </section>
 
@@ -102,7 +102,7 @@
     <section class="card tabela-card">
         <div class="titulo-card">
             <i class="fa-solid fa-boxes-stacked"></i>
-            <h2>Medicamentos Cadastrados</h2>
+            <h2>Medicamentos no estoque</h2>
         </div>
 
         <div class="tabela-container">
@@ -115,7 +115,7 @@
                     <th>Validade</th>
                     <th>Preço</th>
                     <th>Fornecedor</th>
-                    <th>Ação</th>
+                    <th>Ações</th>
                 </tr>
                 </thead>
                 <tbody id="tabelaMedicamentos"></tbody>
