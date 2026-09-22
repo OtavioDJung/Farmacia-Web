@@ -17,7 +17,8 @@ async function carregar() {
         const resposta = await fetch(API);
 
         if (!resposta.ok) {
-            throw new Error("Não foi possível carregar os medicamentos");
+            alert("Não foi possível carregar os medicamentos.");
+            return;
         }
 
         medicamentos = await resposta.json();
@@ -63,7 +64,8 @@ async function cadastrar() {
         });
 
         if (!resposta.ok) {
-            throw new Error("Erro ao cadastrar o medicamento");
+            alert("Erro ao cadastrar o medicamento.");
+            return;
         }
 
         limparFormulario();
@@ -90,7 +92,8 @@ async function remover(id) {
         });
 
         if (!resposta.ok) {
-            throw new Error("Erro ao remover o medicamento");
+            alert("Erro ao remover o medicamento.");
+            return;
         }
 
         await carregar(); // Atualiza a lista

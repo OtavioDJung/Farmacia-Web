@@ -341,10 +341,9 @@ button {
     box-shadow: 0 22px 40px rgba(37, 99, 235, 0.45);
 }
 
-/* Botão GitHub (caso use) */
+/* Botão GitHub */
 .btn-github {
     width: 100%;
-    border: none;
     padding: 16px 18px;
     border-radius: 20px;
     background: linear-gradient(135deg, #111827, #1e293b);
@@ -383,7 +382,6 @@ button {
 }
 
 .filtros button {
-    border: none;
     padding: 14px 22px;
     border-radius: 18px;
     background: rgba(255, 255, 255, 0.08);
@@ -408,7 +406,7 @@ button {
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
 }
 
-/* Botão de importar (caso use) */
+/* Botão de importar */
 .btn-importar {
     background: linear-gradient(135deg, #1f2937, #374151) !important;
 }
