@@ -17,7 +17,7 @@ async function carregar() {
         const resposta = await fetch(API);
 
         if (!resposta.ok) {
-            alert("Não foi possível carregar os medicamentos.");
+            alert("Não foi possível carregar os medicamentos."); ;
             return;
         }
 
