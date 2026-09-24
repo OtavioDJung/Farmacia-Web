@@ -4,7 +4,7 @@
 // Quando você criar o backend, é só alterar esta URL.
 // Exemplo: "http://localhost:3000/medicamentos"
 // ou a URL do seu servidor em produção.
-const API = "http://localhost:3000/medicamentos";
+const API = "http://localhost:8080/medicamentos";
 
 // Lista de medicamentos (vem do banco de dados)
 let medicamentos = [];
@@ -17,7 +17,7 @@ async function carregar() {
         const resposta = await fetch(API);
 
         if (!resposta.ok) {
-            alert("Não foi possível carregar os medicamentos."); ;
+            alert("Não foi possível carregar os medicamentos.");
             return;
         }
 
