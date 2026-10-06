@@ -4,131 +4,275 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle de Estoque - Farmácia</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Chart.js para renderização de gráficos no Dashboard -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
 
-    <!-- TOPO -->
-    <header class="topo">
-        <div>
-            <h1>
+<!-- =========================
+     TELA DE LOGIN
+========================= -->
+<div id="telaLogin" class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <div class="logo-icone">
                 <i class="fa-solid fa-capsules"></i>
-                Controle de Estoque
-            </h1>
-            <p>Organize seus medicamentos de forma simples e prática</p>
+            </div>
+            <h2>Farmácia</h2>
+            <p>Acesse com suas credenciais</p>
         </div>
 
-        <div class="status">
-            <div class="card-status">
-                <span>Total no estoque</span>
-                <strong id="totalCard">0</strong>
-            </div>
-            <div class="card-status vencido-card">
-                <span>Já vencidos</span>
-                <strong id="vencidosCard">0</strong>
-            </div>
-            <div class="card-status proximo-card">
-                <span>Vencem em breve</span>
-                <strong id="proximosCard">0</strong>
-            </div>
-        </div>
-    </header>
-
-    <!-- FORMULÁRIO -->
-    <section class="card">
-        <div class="titulo-card">
-            <i class="fa-solid fa-plus"></i>
-            <h2>Adicionar novo medicamento</h2>
-        </div>
-
-        <div class="formulario">
+        <form id="formLogin" onsubmit="event.preventDefault();">
             <div class="campo">
-                <label for="nome">Nome do medicamento</label>
-                <input type="text" id="nome" placeholder="Ex: Dipirona 500mg">
+                <label for="usuario">Usuário</label>
+                <input type="text" id="usuario" placeholder="Digite seu usuário" required>
             </div>
 
             <div class="campo">
-                <label for="lote">Número do lote</label>
-                <input type="text" id="lote" placeholder="Ex: LOT123">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" placeholder="Digite sua senha" required>
             </div>
 
-            <div class="campo">
-                <label for="quantidade">Quantidade em estoque</label>
-                <input type="number" id="quantidade" placeholder="Quantas unidades?">
-            </div>
+            <button type="button" class="btn-login" onclick="fazerLogin()">
+                <i class="fa-solid fa-right-to-bracket"></i> Entrar
+            </button>
+        </form>
+    </div>
+</div>
 
-            <div class="campo">
-                <label for="validade">Data de validade</label>
-                <input type="date" id="validade">
-            </div>
+<!-- =========================
+     SISTEMA (PAINEL PRINCIPAL)
+========================= -->
+<div id="sistemaApp" class="sistema-escondido">
 
-            <div class="campo">
-                <label for="preco">Preço unitário</label>
-                <input type="number" id="preco" placeholder="0,00" step="0.01">
+    <!-- MENU LATERAL -->
+    <aside class="menu-lateral">
+        <div class="logo-menu">
+            <div class="logo-icone">
+                <i class="fa-solid fa-capsules"></i>
             </div>
-
-            <div class="campo">
-                <label for="fornecedor">Fornecedor</label>
-                <input type="text" id="fornecedor" placeholder="De quem você comprou?">
+            <div>
+                <strong>Farmácia</strong>
+                <span>Controle de estoque</span>
             </div>
         </div>
 
-        <div class="acoes-formulario">
-            <button class="btn-cadastrar" onclick="cadastrar()">
-                <i class="fa-solid fa-floppy-disk"></i>
-                Salvar medicamento
+        <nav>
+            <button id="btnNavDashboard" class="menu-item ativo" onclick="navegarPara('dashboard')">
+                <i class="fa-solid fa-house"></i>
+                <span>Dashboard</span>
+            </button>
+            <button id="btnNavCadastrar" class="menu-item" onclick="navegarPara('cadastrar')">
+                <i class="fa-solid fa-plus"></i>
+                <span>Cadastrar</span>
+            </button>
+            <button id="btnNavEstoque" class="menu-item" onclick="navegarPara('estoque')">
+                <i class="fa-solid fa-boxes-stacked"></i>
+                <span>Estoque</span>
+            </button>
+        </nav>
+
+        <div class="menu-final">
+            <!-- PERFIL DO USUÁRIO CONECTADO (EM CIMA DO BOTAO SAIR) -->
+            <div class="usuario-logado-container" style="padding: 10px 12px; margin-bottom: 10px; background: rgba(255, 255, 255, 0.08); border-radius: 8px; display: flex; align-items: center; gap: 10px; color: #FFFFFF;">
+                <i class="fa-solid fa-circle-user" style="font-size: 22px; color: #4dabf7;"></i>
+                <div style="overflow: hidden;">
+                    <span style="display: block; font-size: 10px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px;">Conectado como</span>
+                    <strong id="nomeUsuarioLogado" style="display: block; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Usuário</strong>
+                </div>
+            </div>
+
+            <button class="menu-item" onclick="fazerLogout()">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Sair</span>
             </button>
         </div>
-    </section>
+    </aside>
 
-    <!-- FILTROS -->
-    <section class="filtros">
-        <button onclick="mostrarTodos()">
-            <i class="fa-solid fa-list"></i>
-            Ver todos
-        </button>
-        <button onclick="mostrarVencidos()">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            Só os vencidos
-        </button>
-        <button onclick="mostrarProximos()">
-            <i class="fa-solid fa-clock"></i>
-            Vencem nos próximos 30 dias
-        </button>
-    </section>
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="conteudo-principal">
+        <div class="container">
 
-    <!-- TABELA -->
-    <section class="card tabela-card">
-        <div class="titulo-card">
-            <i class="fa-solid fa-boxes-stacked"></i>
-            <h2>Medicamentos no estoque</h2>
+            <!-- TELA 1: DASHBOARD -->
+            <section id="abaDashboard" class="secao-aba aba-ativa">
+                <div class="topo">
+                    <h1><i class="fa-solid fa-chart-line"></i> Dashboard Financeiro</h1>
+                    <p>Visão geral de lucro, faturamento e resumo do estoque</p>
+                </div>
+
+                <div class="status">
+                    <div class="card-status">
+                        <span>Total no estoque</span>
+                        <strong id="totalCard">0</strong>
+                    </div>
+                    <div class="card-status vencido-card">
+                        <span>Já vencidos</span>
+                        <strong id="vencidosCard">0</strong>
+                    </div>
+                    <div class="card-status proximo-card">
+                        <span>Vencem em breve</span>
+                        <strong id="proximosCard">0</strong>
+                    </div>
+                    <div class="card-status perda-card">
+                        <span>Valor já perdido</span>
+                        <strong id="valorPerdidoCard">R$ 0,00</strong>
+                    </div>
+                    <div class="card-status risco-card">
+                        <span>Valor em risco</span>
+                        <strong id="valorRiscoCard">R$ 0,00</strong>
+                    </div>
+                </div>
+
+                <!-- ÁREA DOS GRÁFICOS DE LUCRO E PATRIMÔNIO -->
+                <div class="graficos-container">
+                    <div class="card card-grafico">
+                        <div class="titulo-card">
+                            <h2><i class="fa-solid fa-chart-bar"></i> Projeção Financeira e Lucro Estimado</h2>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="graficoLucro"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card card-grafico">
+                        <div class="titulo-card">
+                            <h2><i class="fa-solid fa-chart-pie"></i> Distribuição do Estoque</h2>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="graficoDistribuicao"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TELA 2: CADASTRO DE MEDICAMENTO -->
+            <section id="abaCadastrar" class="secao-aba">
+                <div class="topo">
+                    <h1><i class="fa-solid fa-plus-circle"></i> Cadastrar Medicamento</h1>
+                    <p>Adicione novos itens ao estoque da farmácia</p>
+                </div>
+
+                <div class="card cadastro-card">
+                    <div class="titulo-card">
+                        <i class="fa-solid fa-prescription-bottle-medical"></i>
+                        <h2>Informações do Produto</h2>
+                    </div>
+
+                    <div class="formulario">
+                        <div class="campo">
+                            <label for="nome">Nome do medicamento</label>
+                            <input type="text" id="nome" placeholder="Ex: Dipirona 500mg">
+                        </div>
+                        <div class="campo">
+                            <label for="lote">Número do lote</label>
+                            <input type="text" id="lote" placeholder="Ex: LOT123">
+                        </div>
+                        <div class="campo">
+                            <label for="quantidade">Quantidade</label>
+                            <input type="number" id="quantidade" placeholder="Qtd" min="0" step="1">
+                        </div>
+                        <div class="campo">
+                            <label for="validade">Validade</label>
+                            <input type="date" id="validade">
+                        </div>
+                        <div class="campo">
+                            <label for="preco">Preço unitário</label>
+                            <input type="number" id="preco" placeholder="0,00" min="0" step="0.01">
+                        </div>
+                        <div class="campo">
+                            <label for="fornecedor">Fornecedor</label>
+                            <input type="text" id="fornecedor" placeholder="Fornecedor">
+                        </div>
+                    </div>
+
+                    <div class="acoes-formulario">
+                        <button class="btn-cadastrar" onclick="cadastrar()">
+                            <i class="fa-solid fa-floppy-disk"></i> Salvar medicamento
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ÚLTIMOS ITENS CADASTRADOS -->
+                <div class="card tabela-card" style="margin-top: 25px;">
+                    <div class="titulo-card" style="margin-bottom: 15px;">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <h2>Últimos Medicamentos Cadastrados</h2>
+                    </div>
+
+                    <div class="tabela-container">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Cadastrado Por</th>
+                                <th>Medicamento</th>
+                                <th>Lote</th>
+                                <th>Quantidade</th>
+                                <th>Validade</th>
+                                <th>Preço</th>
+                                <th>Fornecedor</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tabelaUltimosCadastrados"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TELA 3: CONSULTA DE ESTOQUE E FILTROS -->
+            <section id="abaEstoque" class="secao-aba">
+                <div class="topo">
+                    <h1><i class="fa-solid fa-boxes-stacked"></i> Medicamentos no Estoque</h1>
+                    <p>Consulte e gerencie a lista completa dos itens cadastrados</p>
+                </div>
+
+                <div class="filtros">
+                    <button onclick="mostrarTodos()"><i class="fa-solid fa-list-check"></i> Ver todos</button>
+                    <button onclick="mostrarVencidos()"><i class="fa-solid fa-triangle-exclamation"></i> Só os vencidos</button>
+                    <button onclick="mostrarProximos()"><i class="fa-solid fa-clock"></i> Vencem nos próximos 30 dias</button>
+                </div>
+
+                <!-- RESUMO EM LINHA DESTACADO -->
+                <div class="resumo-linha" style="background: var(--bg-card, #ffffff); padding: 12px 20px; border-radius: 8px; font-weight: 500; font-size: 14px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.08); display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
+                    <span>📦 <strong>Total:</strong> <span id="totalEstoqueResumo">0</span></span>
+                    <span>|</span>
+                    <span>🔴 <strong>Vencidos:</strong> <span id="vencidosEstoqueResumo">0</span></span>
+                    <span>|</span>
+                    <span>🟠 <strong>Próximos:</strong> <span id="proximosEstoqueResumo">0</span></span>
+                    <span>|</span>
+                    <span>💰 <strong>Valor perdido:</strong> <span id="valorPerdidoEstoqueResumo">R$ 0,00</span></span>
+                    <span>|</span>
+                    <span>⚠️ <strong>Valor em risco:</strong> <span id="valorRiscoEstoqueResumo">R$ 0,00</span></span>
+                </div>
+
+                <div class="card tabela-card">
+                    <div class="tabela-container">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Cadastrado Por</th>
+                                <th>Medicamento</th>
+                                <th>Lote</th>
+                                <th>Quantidade</th>
+                                <th>Validade</th>
+                                <th>Preço</th>
+                                <th>Fornecedor</th>
+                                <th>Ações</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tabelaMedicamentos"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
         </div>
+    </main>
 
-        <div class="tabela-container">
-            <table>
-                <thead>
-                <tr>
-                    <th>Medicamento</th>
-                    <th>Lote</th>
-                    <th>Quantidade</th>
-                    <th>Validade</th>
-                    <th>Preço</th>
-                    <th>Fornecedor</th>
-                    <th>Ações</th>
-                </tr>
-                </thead>
-                <tbody id="tabelaMedicamentos"></tbody>
-            </table>
-        </div>
-    </section>
-
-    <div id="info"></div>
 </div>
 
 <script src="script.js"></script>
